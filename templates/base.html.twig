@@ -12,6 +12,13 @@
         {% endblock %}
     </head>
     <body>
+			<nav>
+				<ul>
+					<li><a href="{{ path('app_home_index') }}">Accueil</a>
+					
+					<li><a href="{{ path('app_home_about') }}">A propos</a>
+				</ul>
+			</nav>
         {% block body %}{% endblock %}
     </body>
 </html>
