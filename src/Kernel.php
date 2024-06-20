@@ -9,3 +9,5 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 }
+
+// pour ne pas être limité par l'héritage
