@@ -6,6 +6,7 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 class Tag
@@ -15,14 +16,16 @@ class Tag
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 15)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3)]
+    private ?string $label = null;
+
     /**
      * @var Collection<int, Post>
      */
     #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'tags')]
     private Collection $posts;
-
-    #[ORM\Column(length: 15, nullable: true)]
-    private ?string $label = null;
 
     public function __construct()
     {
@@ -32,6 +35,18 @@ class Tag
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $label): static
+    {
+        $this->label = $label;
+
+        return $this;
     }
 
     /**
@@ -57,18 +72,6 @@ class Tag
         if ($this->posts->removeElement($post)) {
             $post->removeTag($this);
         }
-
-        return $this;
-    }
-
-    public function getLabel(): ?string
-    {
-        return $this->label;
-    }
-
-    public function setLabel(?string $label): static
-    {
-        $this->label = $label;
 
         return $this;
     }
